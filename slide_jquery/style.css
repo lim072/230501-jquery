@@ -52,7 +52,7 @@ li,ol,ul{
     background-color: rgb(216, 179, 131);
 }
 .panel>li:nth-of-type(5){
-    background-color: rgb(224, 132, 209);
+    background-color: rgb(191, 223, 50);
 }
 
 .navi{
@@ -79,24 +79,55 @@ li,ol,ul{
     background-color: #000;
 }
 
-.prev{
+.prev::after{
+    border-radius: 10px;
+    content: '';
     display: block;
-    width: 20px;
-    height: 100px;
+    width: 10px;
+    height: 50px;
     background-color: #fff;
     position: absolute;
     left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 45%;
+    transform: translateY(-50%) rotate(45deg);
 }
 
-.next{
+.prev::before{
+    border-radius: 10px;
+    content: '';
     display: block;
-    width: 20px;
-    height: 100px;
+    width: 10px;
+    height: 50px;
+    background-color: #fff;
+    position: absolute;
+    left: 20px;
+    top: 55%;
+    transform: translateY(-50%) rotate(-45deg);
+}
+
+.next::after{
+    border-radius: 10px;
+    content: '';
+    display: block;
+    width: 10px;
+    height: 50px;
     background-color: #fff;
     position: absolute;
     right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 45%;
+    transform: translateY(-50%) rotate(-45deg);
+}
+
+.next::before{
+
+    border-radius: 10px;
+    content: '';
+    display: block;
+    width: 10px;
+    height: 50px;
+    background-color: #fff;
+    position: absolute;
+    right: 20px;
+    top: 55%;
+    transform: translateY(-50%) rotate(45deg);
 }

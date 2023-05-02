@@ -12,6 +12,8 @@ $(document).ready(function(){
     
     var len = $('.panel>li').length;
     var enableClick = true;
+
+    
     
     $('.next').on('click',function(e){
         e.preventDefault();
@@ -41,9 +43,9 @@ $(document).ready(function(){
         stop은 현재 동작하고 있는 애니메이션을 즉시 동작을 중단시키고
         다음 애니메이션을 적용하도록 합니다
         */
-        $('.panel>li').filter('.on').stop().animate({ 'left': '-100%' }, 500, function(){
-            $(this).removeClass('on').hide();
-        });
+        // $('.panel>li').filter('.on').stop().animate({ 'left': '-100%' }, 500, function(){
+        //     $(this).removeClass('on').hide();
+        // });
         /*
         hide(), show() 에니메이션을 나타내고, 사라지게하는 메소드
         fadein, fadeout (oppacfity 효과)메소드와 비슷하지만 분명한 차이가 있습니다(코드가 더 길어지기 때문)
@@ -52,10 +54,14 @@ $(document).ready(function(){
         css(요소,값) 으로 적용시킵니다, 하지만 여러개의 효과를 넣어야할때는
         css({요소: 값, 요소: 값}) 으로 적용합니다
         */
-        $('.panel>li').eq(next_index).show().css({ 'left': '100%' }).animate({'left' : '0%'},500, function(){
-            $(this).addClass('on');
-            enableClick = true
-        })
+
+        //eq()메서드는 선택한요소의 인덱스 번호에 해당하는 요소를 찾습니다
+        // $('.panel>li').eq(next_index).show().css({ 'left': '100%' }).animate({'left' : '0%'},500, function(){
+        //     $(this).addClass('on');
+        //     enableClick = true
+        // })
+
+        moveNext(next_index)
 
         }
 
@@ -67,39 +73,93 @@ $(document).ready(function(){
 
     })
 
+    function moveNext(index){
+        $('.panel>li').filter('.on').stop().animate({ 'left': '-100%' }, 500, function(){
+            $(this).removeClass('on').hide();
+        });
+
+        $('.panel>li').eq(index).show().css({ 'left': '100%' }).animate({'left' : '0%'},500, function(){
+            $(this).addClass('on');
+            enableClick = true
+        })
+
+        $('.navi>li').children('a').removeClass('on');
+        $('.navi>li').eq(index).children('a').addClass('on')
+
+    }
 
     $('.prev').on('click',function(e){
         e.preventDefault();
 
         if(enableClick){ 
         enableClick = false;
-        var current_index = $('.panel>li').filter('.on').index();
+        
+        //var current_index = $('.panel>li').filter('.on').index();
+        var current_index = $('.panel>li.on').index();
         var prev_index;
 
-        if(current_index == len + 1){
-            prev_index = 0;
+        if(current_index == 0){
+            prev_index = len - 1;
         }else{
             prev_index = current_index - 1;
         }
 
 
         
-        $('.panel>li').filter('.on').stop().animate({ 'right': '100%' }, 500, function(){
-            $(this).removeClass('on').hide();
-        });
+        // $('.panel>li').filter('.on').stop().animate({ 'left': '100%' }, 500, function(){
+        //     $(this).removeClass('on').hide();
+        // });
        
-        $('.panel>li').eq(prev_index).show().css({ 'right': '-100%' }).animate({'right' : '0%'},500, function(){
-            $(this).addClass('on');
-            enableClick = true
-        })
+        // $('.panel>li').eq(prev_index).show().css({ 'left': '-100%' }).animate({'left' : '0%'},500, function(){
+        //     $(this).addClass('on');
+        //     enableClick = true
+        // })
+
+        movePrev(prev_index)
 
         }
 
 
+    })
 
-        
-
+    function movePrev(index){
+        $('.panel>li').filter('.on').stop().animate({ 'left': '100%' }, 500, function(){
+            $(this).removeClass('on').hide();
+        });
        
+        $('.panel>li').eq(index).show().css({ 'left': '-100%' }).animate({'left' : '0%'},500, function(){
+            $(this).addClass('on');
+            enableClick = true
+        })
 
+        $('.navi>li').children('a').removeClass('on');
+        $('.navi>li').eq(index).children('a').addClass('on')
+    }
+
+
+
+    $('.navi>li').on('click', function(e){
+        e.preventDefault();
+
+        var current_index = $('.panel>li').filter('.on').index();
+        var target_index = $(this).index();
+        //current_index와 target_index를 비교해서
+        //같으면 반응을 해서는 안되고(return)
+        //target_index가 크면 next로 이동
+        //target_index가 작으면 prev로 이동
+
+        if(target_index == current_index){return;}
+        
+        if(target_index > current_index){
+            //next로 이동
+            moveNext(target_index);
+        }
+
+        if(target_index < current_index){
+            //prev로 이동
+            movePrev(target_index)            
+        }
+     
     })
 })
+
